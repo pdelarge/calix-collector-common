@@ -1,0 +1,17 @@
+[project]
+name = "calix-collector-common"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "pycalixconfig @ git+https://github.com/pdelarge/pycalixconfig.git",
+    "PyPowerLogger @ git+https://github.com/pdelarge/PyPowerLogger.git",
+    "opentelemetry-sdk",
+    "opentelemetry-exporter-otlp-proto-http",
+    "clickhouse-connect>=0.8",
+    "pyrate-limiter>=3.0",
+    "redis>=5.0",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "respx"]
