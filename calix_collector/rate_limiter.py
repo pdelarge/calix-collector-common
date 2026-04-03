@@ -6,7 +6,12 @@ across multiple workers.
 
 from redis import Redis
 
-from pyrate_limiter import Duration, Limiter, Rate, RedisBucket, SingleBucketFactory, TimeClock
+from pyrate_limiter import Duration, Limiter, Rate, RedisBucket, SingleBucketFactory
+
+try:
+    from pyrate_limiter import TimeClock
+except ImportError:
+    from pyrate_limiter import MonotonicClock as TimeClock
 
 
 def create_rate_limiter(
