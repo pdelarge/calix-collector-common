@@ -6,12 +6,7 @@ across multiple workers.
 
 from redis import Redis
 
-from pyrate_limiter import Duration, Limiter, Rate, RedisBucket, SingleBucketFactory
-
-try:
-    from pyrate_limiter import TimeClock
-except ImportError:
-    from pyrate_limiter import MonotonicClock as TimeClock
+from pyrate_limiter import Duration, Limiter, Rate, RedisBucket, SingleBucketFactory, MonotonicClock
 
 
 def create_rate_limiter(
@@ -39,5 +34,6 @@ def create_rate_limiter(
     redis_conn = Redis.from_url(redis_url)
     rates = [Rate(max_rps, Duration.SECOND)]
     bucket = RedisBucket(rates, redis_conn, bucket_key=key_prefix, script_hash="")
-    factory = SingleBucketFactory(bucket, TimeClock())
-    return Limiter(factory, raise_when_fail=False, max_delay=Duration.SECOND * 5)
+    clock = MonotonicClock()
+    factory = SingleBucketFactory(bucket, clock)
+    return Limiter(factory)

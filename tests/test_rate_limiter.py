@@ -23,7 +23,7 @@ class TestCreateRateLimiter:
 
         mock_redis.from_url.assert_called_once_with("redis://:pass@host:6379/0")
         mock_bucket.assert_called_once()
-        mock_limiter.assert_called_once()
+        mock_limiter.assert_called_once_with(mock_factory.return_value)
         assert result is mock_limiter.return_value
 
     @patch("calix_collector.rate_limiter.Limiter")
@@ -45,5 +45,5 @@ class TestCreateRateLimiter:
 
         result = create_rate_limiter(cfg, "RateLimiter:TEST", default_rps=5)
 
-        mock_limiter.assert_called_once()
+        mock_limiter.assert_called_once_with(mock_factory.return_value)
         assert result is mock_limiter.return_value
