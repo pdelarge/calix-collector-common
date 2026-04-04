@@ -64,7 +64,10 @@ class ClickHouseWriter:
         with self._tracer.start_as_current_span(f"clickhouse.insert.{table}") as span:
             span.set_attribute("table", table)
             span.set_attribute("row_count", len(rows))
-            self._client.insert(table, rows, column_names=columns)
+            self._client.insert(
+                table, rows, column_names=columns,
+                settings={"max_partitions_per_insert_block": 0},
+            )
             self._row_counter.add(len(rows), {"table": table})
             self._logger.info(f"Inserted {len(rows)} rows into {table}")
             return len(rows)
