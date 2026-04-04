@@ -33,7 +33,8 @@ class TestClickHouseWriter:
 
         assert result == 2
         mock_client.insert.assert_called_once_with(
-            "test_table", rows, column_names=["col1", "col2"]
+            "test_table", rows, column_names=["col1", "col2"],
+            settings={"max_partitions_per_insert_block": 0},
         )
 
     def test_insert_empty_rows_returns_zero(self):
